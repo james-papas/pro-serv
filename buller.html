@@ -28,7 +28,7 @@
           outputDiv.innerHTML = "<pre>" + JSON.stringify(posContext, null, 2) + "</pre>";
           
           // Add the retool dashboard embed. This must occur to read data into the app.
-          var rt = window.retool.RetoolDashboard(document.getElementById('container'),"https://lsapacproserv.retool.com/embedded/public/3f370ce4-3674-45a0-9bef-3c74e3e3a023?allow-same-origin=true",
+          var rt = window.retool.RetoolDashboard(document.getElementById('container'),"https://lsapacproserv.retool.com/embedded/public/77babb9d-468a-4c8f-95c5-3407a103fd25?allow-same-origin=true",
           {
             height: "100%",
             width: "100%",
@@ -63,11 +63,6 @@
     </script>
   </head>
   <body>
-    <form>
-    <label for="myInput">Enter your name:</label>
-    <input type="text" id="myInput" name="myInput" autofocus>
-    <input type="submit" value="Submit">
-    </form>
     <div id="container" style="height: 100%; width: 100%;"></div>
     <div id="posContextDiv"></div>
     <div id="accountContext"></div>
