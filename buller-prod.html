@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example Page</title>
+     <style>
+       html, body {
+        height: 100%;
+      }
+      #posContextDiv, #accountContext, #discountsContext {
+        visibility: hidden;
+      }
+    </style>
+    <script src="https://cdn.tryretool.com/embed.js"></script>
+    <script>
+      
+       //  window.onload = function() {
+     // document.getElementById("myInput").focus();
+   // };
+      
+      var getCurrentAccountFunc;
+
+      function printContext() {
+        var outputDiv = document.getElementById("posContextDiv");
+        if (typeof posContext === "undefined") {
+          outputDiv.innerHTML = "Loading POS Context...";
+          setTimeout(printContext, 1000);
+        } else {
+          outputDiv.innerHTML = "<pre>" + JSON.stringify(posContext, null, 2) + "</pre>";
+          
+          // Add the retool dashboard embed. This must occur to read data into the app.
+          var rt = window.retool.RetoolDashboard(document.getElementById('container'),"https://lsapacproserv.retool.com/embedded/public/77babb9d-468a-4c8f-95c5-3407a103fd25?allow-same-origin=true",
+          {
+            height: "100%",
+            width: "100%",
+           }
+          );
+          
+          //Get Available Discounts
+          function getAvailableDiscounts() {
+            const printResult = function (response) {
+              document.getElementById("discountsContext").innerHTML = "<pre class='text-white'>"+JSON.stringify(response.data, undefined, 2)+"</pre>"
+            };
+            pos_getAvailableDiscounts(printResult)
+          }
+
+          getCurrentAccountFunc = function(response) {
+            document.getElementById("accountContext").innerHTML = "<pre class='text-white'>" + JSON.stringify(response.data, undefined, 2) + "</pre>";
+            setTimeout(getAvailableDiscounts, 1000);
+          };
+          pos_getCurrentAccount(getCurrentAccountFunc);
+
+          // Add an event listener to the window object that listens for the "message" event.
+          window.addEventListener("message", function(event) {
+            if (event.data === "rerunGetAccount") {
+              getCurrentAccountFunc();
+            }
+          });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', printContext);
+
+    </script>
+  </head>
+  <body>
+    <div id="container" style="height: 100%; width: 100%;"></div>
+    <div id="posContextDiv"></div>
+    <div id="accountContext"></div>
+    <div id="discountsContext"></div>
+  </body>
+</html>
